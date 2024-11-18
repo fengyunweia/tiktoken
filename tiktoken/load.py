@@ -49,8 +49,12 @@ def read_file_cached(blobpath: str, expected_hash: str | None = None) -> bytes:
 
     cache_path = os.path.join(cache_dir, cache_key)
     if os.path.exists(cache_path):
-        with open(cache_path, "rb") as f:
-            data = f.read()
+        
+        with open(cache_path, "r", newline='\n') as f:
+            data_text = f.read()
+
+        data = data_text.encode('utf-8')
+        
         if expected_hash is None or check_hash(data, expected_hash):
             return data
 
